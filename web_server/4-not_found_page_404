@@ -6,7 +6,7 @@
 
 echo -e "Updating and installing Nginx.\n"
 sudo apt-get update -y -qq && \
-         sudo apt-get install nginx -y
+	 sudo apt-get install nginx -y
 
 echo -e "\nSetting up some minor stuff.\n"
 
@@ -24,10 +24,14 @@ sudo chmod -R 755 /var/www
 cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
 
 # Creating new index
-echo -e "Holberton School for the win!" | dd status=none of=/var/www/html/index.nginx-debian.html
+echo -e "Holberton School for the win!" > /var/www/html/index.nginx-debian.html
 
 # Setting up /redirect_me to a youtube video
-sudo sed -i '24i\       rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/elipro.tech
+sudo sed -i '24i\	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;' /etc/nginx/sites-available/elipro.tech
+
+# Set up a 404 page
+echo "Ceci n'est pas une page" >> /var/www/html/error_404.html
+sudo sed -i '25i\	error_page 404 /error_404.html;' /etc/nginx/sites-available/elipro.tech
 
 # Restarting nginx
 sudo service nginx restart
